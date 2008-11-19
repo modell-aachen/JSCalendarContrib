@@ -9,11 +9,11 @@ easier from TWiki plugins. This module includes the functions:
 
 =cut
 
-package TWiki::Contrib::JSCalendarContrib;
+package Foswiki::Contrib::JSCalendarContrib;
 
 use strict;
 
-require TWiki::Func;    # The plugins API
+require Foswiki::Func;    # The plugins API
 
 use vars qw( $VERSION $RELEASE $SHORTDESCRIPTION );
 
@@ -54,7 +54,7 @@ my %w = (
 
 =begin twiki
 
----+++ TWiki::Contrib::JSCalendarContrib::renderDateForEdit($name, $value, $format [, \%cssClass]) -> $html
+---+++ Foswiki::Contrib::JSCalendarContrib::renderDateForEdit($name, $value, $format [, \%cssClass]) -> $html
 
 This is the simplest way to use calendars from a plugin.
    * =$name= is the name of the CGI parameter for the calendar
@@ -67,11 +67,11 @@ This is the simplest way to use calendars from a plugin.
      the textfield.
 Example:
 <verbatim>
-use TWiki::Contrib::JSCalendarContrib;
+use Foswiki::Contrib::JSCalendarContrib;
 ...
-my $fromDate = TWiki::Contrib::JSCalendarContrib::renderDateForEdit(
+my $fromDate = Foswiki::Contrib::JSCalendarContrib::renderDateForEdit(
    'from', '1 April 1999');
-my $toDate = TWiki::Contrib::JSCalendarContrib::renderDateForEdit(
+my $toDate = Foswiki::Contrib::JSCalendarContrib::renderDateForEdit(
    'to', undef, '%Y');
 </verbatim>
 
@@ -80,7 +80,7 @@ my $toDate = TWiki::Contrib::JSCalendarContrib::renderDateForEdit(
 sub renderDateForEdit {
     my ($name, $value, $format, $options) = @_;
 
-    $format ||= $TWiki::cfg{JSCalendarContrib}{format} || '%e %B %Y';
+    $format ||= $Foswiki::cfg{JSCalendarContrib}{format} || '%e %B %Y';
 
     addHEAD('twiki');
 
@@ -100,8 +100,8 @@ sub renderDateForEdit {
           -name => 'img_'.$name,
           -onclick =>
             "javascript: return showCalendar('id_$name','$format')",
-            -src=> TWiki::Func::getPubUrlPath() . '/' .
-              TWiki::Func::getTwikiWebname() .
+            -src=> Foswiki::Func::getPubUrlPath() . '/' .
+              Foswiki::Func::getTwikiWebname() .
                   '/JSCalendarContrib/img.gif',
           -alt => 'Calendar',
           -align => 'middle');
@@ -109,7 +109,7 @@ sub renderDateForEdit {
 
 =begin twiki
 
----+++ TWiki::Contrib::JSCalendarContrib::addHEAD($setup)
+---+++ Foswiki::Contrib::JSCalendarContrib::addHEAD($setup)
 
 This function will automatically add the headers for the calendar to the page
 being rendered. It's intended for use when you want more control over the
@@ -123,20 +123,20 @@ text field. For example, say we wanted to display the date with the calendar
 icon _before_ the text field, using the format =%Y %b %e=
 <verbatim>
 # Add styles and javascript for the calendar
-use TWiki::Contrib::JSCalendarContrib;
+use Foswiki::Contrib::JSCalendarContrib;
 ...
 
 sub commonTagsHandler {
   ....
   # Enable 'showCalendar'
-  TWiki::Contrib::JSCalendarContrib::addHEAD( 'twiki' );
+  Foswiki::Contrib::JSCalendarContrib::addHEAD( 'twiki' );
 
   my $cal = CGI::image_button(
       -name => 'img_datefield',
       -onclick =>
        "return showCalendar('id_datefield','%Y %b %e')",
-      -src=> TWiki::Func::getPubUrlPath() . '/' .
-             TWiki::Func::getTwikiWebname() .
+      -src=> Foswiki::Func::getPubUrlPath() . '/' .
+             Foswiki::Func::getTwikiWebname() .
              '/JSCalendarContrib/img.gif',
       -alt => 'Calendar',
       -align => 'middle' )
@@ -187,15 +187,15 @@ All available date specifiers:
 sub addHEAD {
     my $setup = shift;
     $setup ||= 'calendar-setup';
-    my $style = $TWiki::cfg{JSCalendarContrib}{style} || 'blue';
-    my $lang = $TWiki::cfg{JSCalendarContrib}{lang} || 'en';
+    my $style = $Foswiki::cfg{JSCalendarContrib}{style} || 'blue';
+    my $lang = $Foswiki::cfg{JSCalendarContrib}{lang} || 'en';
     my $base = '%PUBURLPATH%/%SYSTEMWEB%/JSCalendarContrib';
     eval {
-        require TWiki::Contrib::BehaviourContrib;
-        if (defined(&TWiki::Contrib::BehaviourContrib::addHEAD)) {
-            TWiki::Contrib::BehaviourContrib::addHEAD();
+        require Foswiki::Contrib::BehaviourContrib;
+        if (defined(&Foswiki::Contrib::BehaviourContrib::addHEAD)) {
+            Foswiki::Contrib::BehaviourContrib::addHEAD();
         } else {
-            TWiki::Func::addToHEAD(
+            Foswiki::Func::addToHEAD(
                 'BEHAVIOURCONTRIB',
                 '<script type="text/javascript" src="%PUBURLPATH%/%SYSTEMWEB%/BehaviourContrib/behaviour.compressed.js"></script>');
         }
@@ -208,14 +208,14 @@ sub addHEAD {
 <script type='text/javascript' src='$base/calendar.js'></script>
 <script type='text/javascript' src='$base/lang/calendar-$lang.js'></script>
 HERE
-    TWiki::Func::addToHEAD( 'JSCALENDARCONTRIB', $head );
+    Foswiki::Func::addToHEAD( 'JSCALENDARCONTRIB', $head );
 
     # Add the setup separately; there might be different setups required
     # in a single HTML page.
     $head = <<HERE;
 <script type='text/javascript' src='$base/$setup.js'></script>
 HERE
-    TWiki::Func::addToHEAD( 'JSCALENDARCONTRIB_'.$setup, $head );
+    Foswiki::Func::addToHEAD( 'JSCALENDARCONTRIB_'.$setup, $head );
 }
 
 1;

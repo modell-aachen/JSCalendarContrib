@@ -1,13 +1,13 @@
 # See bottom of file for license and copyright details
-# This packages subclasses TWiki::Form::FieldDefinition to implement
+# This packages subclasses Foswiki::Form::FieldDefinition to implement
 # the =date= type
 
-package TWiki::Form::Date;
-use base 'TWiki::Form::FieldDefinition';
+package Foswiki::Form::Date;
+use base 'Foswiki::Form::FieldDefinition';
 
 use strict;
 
-use TWiki::Contrib::JSCalendarContrib;
+use Foswiki::Contrib::JSCalendarContrib;
 
 sub new {
     my $class = shift;
@@ -30,14 +30,14 @@ sub renderForEdit {
           class => $this->can('cssClasses') ?
             $this->cssClasses('twikiInputField', 'twikiEditFormDateField') :
               'twikiInputField twikiEditFormDateField'});
-    my $ifFormat = $TWiki::cfg{JSCalendarContrib}{format} || '%e %b %Y';
-    TWiki::Contrib::JSCalendarContrib::addHEAD( 'twiki' );
+    my $ifFormat = $Foswiki::cfg{JSCalendarContrib}{format} || '%e %b %Y';
+    Foswiki::Contrib::JSCalendarContrib::addHEAD( 'twiki' );
     my $button .= CGI::image_button(
         -name => 'calendar',
         -onclick =>
           "return showCalendar('id$this->{name}','$ifFormat')",
-        -src=> $TWiki::cfg{PubUrlPath} . '/' .
-          $TWiki::cfg{SystemWebName} .
+        -src=> $Foswiki::cfg{PubUrlPath} . '/' .
+          $Foswiki::cfg{SystemWebName} .
             '/JSCalendarContrib/img.gif',
         -alt => 'Calendar',
         -class => 'twikiButton twikiEditFormCalendarButton' );
@@ -55,10 +55,10 @@ sub renderForEdit {
 1;
 __DATA__
 
-Module of Foswiki - The Free Open Source Wiki, http://foswiki.org/, http://TWiki.org/
+Module of Foswiki - The Free Open Source Wiki, http://foswiki.org/, http://Foswiki.org/
 
-Copyright (C) 2001-2007 TWiki Contributors. All Rights Reserved.
-TWiki Contributors are listed in the AUTHORS file in the root of
+Copyright (C) 2001-2007 Foswiki Contributors. All Rights Reserved.
+Foswiki Contributors are listed in the AUTHORS file in the root of
 this distribution. NOTE: Please extend that file, not this notice.
 
 This program is free software; you can redistribute it and/or
