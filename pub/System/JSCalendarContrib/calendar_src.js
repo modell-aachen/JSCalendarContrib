@@ -1367,10 +1367,15 @@ Calendar.prototype.hide = function () {
  *  the calendar element style -- position property -- this might be relative
  *  to the parent's containing rectangle).
  */
-Calendar.prototype.showAt = function (x, y) {
+Calendar.prototype.showAt = function (x, y, isFixed) {
 	var s = this.element.style;
 	s.left = x + "px";
 	s.top = y + "px";
+	if (isFixed) {
+		s.position = 'fixed';
+	} else {
+		s.position = 'absolute';
+	}
 	this.show();
 };
 
@@ -1406,6 +1411,22 @@ Calendar.prototype.showAtElement = function (el, opts) {
 		tmp = box.y + box.height - br.y;
 		if (tmp > 0) box.y -= tmp;
 	};
+	var computed = window.getComputedStyle;
+	if (!computed) {
+		computed = function(e) { return e.currentStyle; }
+		// TODO test
+	}
+	function isPositionFixed(el) {
+		var n = el;
+		while (n.parentNode && n.style) {
+			var s = computed(n);
+			if (s.position && s.position === 'fixed') {
+				return true;
+			}
+			n = n.parentNode;
+		}
+		return false;
+	}
 	this.element.style.display = "block";
 	Calendar.continuation_for_the_fucking_khtml_browser = function() {
 		var w = self.element.offsetWidth;
@@ -1436,7 +1457,7 @@ Calendar.prototype.showAtElement = function (el, opts) {
 		p.height = h + 40;
 		self.monthsCombo.style.display = "none";
 		fixPosition(p);
-		self.showAt(p.x, p.y);
+		self.showAt(p.x, p.y, isPositionFixed(el));
 	};
 	if (Calendar.is_khtml)
 		setTimeout("Calendar.continuation_for_the_fucking_khtml_browser()", 10);
