@@ -11,7 +11,7 @@ sub maintain {
             if ( $spmeta->getPreference( "JSCALENDARCONTRIB_LANG" ) eq '' ) {
                 $result->{result} = 1;
                 $result->{priority} = ERROR;
-                $result->{solution} = "Add JSCALENDARCONTRIB_LANG setting to [[Main.SitePreferences]] according to documentation";
+                $result->{solution} = "Add '   * Set JSCALENDARCONTRIB_LANG = %<nop>LANGUAGE% to [[Main.SitePreferences]].";
             }
             return $result;
         }
