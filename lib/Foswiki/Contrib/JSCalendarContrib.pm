@@ -234,14 +234,14 @@ HERE
 sub maintenanceHandler {
     Foswiki::Plugins::MaintenancePlugin::registerCheck("jscalendercontrib:settings_language", {
         name => "JSCalenderContrib language setting",
-        description => "JSCALENDARCONTRIB_LANG setting in missing in SitePreferences",
+        description => "JSCALENDARCONTRIB_LANG set in SitePreferences",
         check => sub {
             my $result = { result => 0 };
-            my ( $spmeta, $sp ) = Foswiki::Func::readTopic( 'Main', 'SitePreferences');
-            if ( $spmeta->getPreference( "JSCALENDARCONTRIB_LANG" ) eq '' ) {
+            my ($spmeta, $sp) = Foswiki::Func::readTopic('Main', 'SitePreferences');
+            if ($spmeta->getPreference("JSCALENDARCONTRIB_LANG")) {
                 $result->{result} = 1;
                 $result->{priority} = 1;
-                $result->{solution} = "Add '   * Set JSCALENDARCONTRIB_LANG = %<nop>LANGUAGE%' to [[Main.SitePreferences]].";
+                $result->{solution} = "Remove JSCALENDARCONTRIB_LANG from [[Main.SitePreferences]].";
             }
             return $result;
         }
